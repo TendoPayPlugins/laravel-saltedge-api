@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <php>
+        <env name="SALTEDGE_URL" value="https://www.saltedge.com/api/v4/"/>
+        <env name="SALTEDGE_APP_ID" value="WM75_qN1N3KJYCl6IjhZgqGtRAY-i614fuAjV4UnGw8"/>
+        <env name="SALTEDGE_SECRET" value="5o12Ea41LHXN5ioWSOdaAvL8Q-EHtoW2Z7GQz2T1zjo"/>
+    </php>
+    <testsuites>
+        <testsuite name="MyPackage Test Suite">
+            <directory>test</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
+</phpunit>
