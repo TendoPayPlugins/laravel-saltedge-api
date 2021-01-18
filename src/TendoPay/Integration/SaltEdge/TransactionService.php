@@ -1,5 +1,6 @@
 <?php
 
+use TendoPay\Integration\SaltEdge\Api\Accounts\TransactionsListFilter;
 use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 use TendoPay\Integration\SaltEdge\Api\ApiEndpointErrorException;
 use TendoPay\Integration\SaltEdge\Api\Transactions\TransactionNotFoundException;
@@ -42,10 +43,10 @@ class TransactionService
      *         be thrown
      * @throws TransactionNotFoundException when transaction with given Connection ID or Account ID could not be found
      */
-    public function getList($connectionId, $accountId)
+    public function getList(TransactionsListFilter $transactionsListFilter)
     {
         try {
-            $received = $this->endpointCaller->call("GET", sprintf(self::LIST_TRANSACTIONS_API_URL, $connectionId, $accountId));
+            $received = $this->endpointCaller->call("GET", sprintf(self::LIST_TRANSACTIONS_API_URL, $transactionsListFilter->toArray()));
             return $received->data;
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error_class) {
