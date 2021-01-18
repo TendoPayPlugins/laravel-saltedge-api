@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
+use TransactionService;
 
 class SaltEdgeServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,10 @@ class SaltEdgeServiceProvider extends ServiceProvider
 
         $this->app->singleton(CustomerService::class, function (Application $app) {
             return new CustomerService($app->get(EndpointCaller::class));
+        });
+
+        $this->app->singleton(TransactionService::class, function (Application $app) {
+            return new TransactionService($app->get(EndpointCaller::class));
         });
 
         $this->app->singleton(ProviderService::class, function (Application $app) {

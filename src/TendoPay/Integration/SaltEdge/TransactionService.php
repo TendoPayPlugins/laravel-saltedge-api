@@ -11,7 +11,7 @@ class TransactionService
     private $endpointCaller;
 
     /**
-     * CustomerService constructor.
+     * TransactionService constructor.
      *
      * @param EndpointCaller $endpointCaller injected dependency
      */
