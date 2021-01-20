@@ -50,7 +50,7 @@ class SaltEdgeServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(MerchantService::class, function (Application $app) {
-            return new ProviderService($app->get(EndpointCaller::class));
+            return new MerchantService($app->get(EndpointCaller::class));
         });
 
         $this->app->singleton(SaltEdgeConnect::class, function (Application $app) {
