@@ -54,7 +54,7 @@ class AccountService
             $received = $this->endpointCaller->call("GET", self::ACCOUNTS_LIST_API_URL, $accountsListFilter->toArray());
             return $received->data;
         } catch (ApiEndpointErrorException $exception) {
-            switch ($exception->getOriginalError()->error_class) {
+            switch ($exception->getOriginalError()->error->class) {
                 case "LoginNotFound":
                     throw new InvalidLoginIdException();
                 default:

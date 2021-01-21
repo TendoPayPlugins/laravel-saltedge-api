@@ -52,7 +52,7 @@ class CustomerService
             $received = $this->endpointCaller->call("GET", sprintf(self::SHOW_CUSTOMER_API_URL, $id));
             return $received->data;
         } catch (ApiEndpointErrorException $exception) {
-            switch ($exception->getOriginalError()->error_class) {
+            switch ($exception->getOriginalError()->error->class) {
                 case "CustomerNotFound":
                     throw new CustomerNotFoundException();
                 default:
@@ -135,7 +135,7 @@ class CustomerService
             $received = $this->endpointCaller->call('DELETE', sprintf(self::SHOW_CUSTOMER_API_URL, $id));
             return $received->data;
         } catch (ApiEndpointErrorException $exception) {
-            switch ($exception->getOriginalError()->error_class) {
+            switch ($exception->getOriginalError()->error->class) {
                 case 'CustomerNotFound':
                     throw new CustomerNotFoundException();
                 default:

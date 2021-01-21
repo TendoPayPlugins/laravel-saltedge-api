@@ -49,7 +49,7 @@ class ConnectionService
             $received = $this->endpointCaller->call("GET", self::CONNECTIONS_API_URL);
             return $received->data;
         } catch (ApiEndpointErrorException $exception) {
-            switch ($exception->getOriginalError()->error_class) {
+            switch ($exception->getOriginalError()->error->class) {
                 case "LoginNotFound":
                     throw new InvalidLoginIdException();
                 default:
