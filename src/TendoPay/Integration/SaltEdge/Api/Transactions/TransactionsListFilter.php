@@ -1,6 +1,6 @@
 <?php
 
-namespace TendoPay\Integration\SaltEdge\Api\Accounts;
+namespace TendoPay\Integration\SaltEdge\Api\Transactions;
 
 
 class TransactionsListFilter
