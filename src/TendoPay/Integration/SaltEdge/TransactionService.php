@@ -1,5 +1,7 @@
 <?php
 
+namespace TendoPay\Integration\SaltEdge;
+
 use TendoPay\Integration\SaltEdge\Api\Accounts\TransactionsListFilter;
 use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 use TendoPay\Integration\SaltEdge\Api\ApiEndpointErrorException;
