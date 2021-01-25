@@ -38,9 +38,9 @@ class MerchantService
      * @throws \GuzzleHttp\Exception\GuzzleException only declared due to lower method's declarations, but should never
      *         be thrown
      */
-    public function getAll()
+    public function getMerchants($data)
     {
-        $received = $this->endpointCaller->call("POST", self::LIST_Merchants_API_URL);
+        $received = $this->endpointCaller->call("POST", self::LIST_Merchants_API_URL, $data);
         return $received->data;
     }
 
