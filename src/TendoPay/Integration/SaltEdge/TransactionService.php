@@ -48,7 +48,7 @@ class TransactionService
     public function getList(TransactionsListFilter $transactionsListFilter)
     {
         try {
-            $received = $this->endpointCaller->call("GET", sprintf(self::LIST_TRANSACTIONS_API_URL, $transactionsListFilter->toArray()));
+            $received = $this->endpointCaller->call("GET", self::LIST_TRANSACTIONS_API_URL, $transactionsListFilter->toArray());
             return $received->data;
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
