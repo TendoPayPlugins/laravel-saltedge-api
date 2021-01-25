@@ -9,7 +9,7 @@ use TendoPay\Integration\SaltEdge\Api\Transactions\TransactionNotFoundException;
 
 class TransactionService
 {
-    const LIST_TRANSACTIONS_API_URL = "customers";
+    const LIST_TRANSACTIONS_API_URL = "transactions";
 
     private $endpointCaller;
 
