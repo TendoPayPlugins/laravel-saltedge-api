@@ -42,6 +42,12 @@ class AccountsListFilter
         $this->filters["customer_id"] = $customerId;
         return $this;
     }
+    
+    public function withConnectionId($connectionId)
+    {
+        $this->filters["connection_id"] = $connectionId;
+        return $this;
+    }
 
     public function toArray()
     {
