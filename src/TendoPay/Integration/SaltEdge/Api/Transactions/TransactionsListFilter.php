@@ -30,6 +30,12 @@ class TransactionsListFilter
         $this->filters['account_id'] = $accountId;
         return $this;
     }
+    
+    public function withFromId($fromId)
+    {
+        $this->filters['from_id'] = $fromId;
+        return $this;
+    }
 
     public function toArray()
     {
