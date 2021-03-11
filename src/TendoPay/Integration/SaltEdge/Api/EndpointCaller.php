@@ -79,12 +79,9 @@ class EndpointCaller
 
         if ($response->getStatusCode() === 200) {
             return json_decode($response->getBody()->getContents());
-        } elseif (array_search($response->getStatusCode(), [400, 404, 406, 409]) !== false) {
+        } else {
             $this->handleErrors($response);
             // no return, will throw exception
-        } else {
-            throw new UnexpectedStatusCodeException(sprintf("Got error code: %s. Not sure how to handle it. Response: %s",
-                $response->getStatusCode(), var_export($response->getBody()->getContents(), true)));
         }
     }
 
@@ -102,27 +99,44 @@ class EndpointCaller
      */
     private function handleErrors(ResponseInterface $response)
     {
-        $originalError = json_decode($response->getBody()->getContents());
+        return $response;
+        // $originalError = json_decode($response->getBody()->getContents());
 
-        switch ($originalError->error->class) {
-            case "ApiKeyNotFound":
-                throw new WrongApiKeyException(sprintf("%s: %s. Request: %s", $originalError->error->class,
-                    $originalError->error_message, var_export($originalError->request, true)));
-                break;
-            case "ClientDisabled":
-                throw new ClientDisabledException(sprintf("%s: %s. Request: %s", $originalError->error->class,
-                    $originalError->error_message, var_export($originalError->request, true)));
-                break;
-            case "ClientNotFound":
-                throw new ApiKeyClientMismatchException(sprintf("%s: %s. Request: %s", $originalError->error->class,
-                    $originalError->error_message, var_export($originalError->request, true)));
-                break;
-            default:
-                throw new ApiEndpointErrorException(
-                    $originalError,
-                    sprintf("Got error code: %s, error class: %s. Not sure how to handle it. Body of error response: %s",
-                        $response->getStatusCode(), $originalError->error->class, var_export($originalError, true))
-                );
-        }
+        // switch ($originalError->error->class) {
+        //     case "ApiKeyNotFound":
+        //         throw new WrongApiKeyException(sprintf(
+        //             "%s: %s. Request: %s",
+        //             $originalError->error->class,
+        //             $originalError->error_message,
+        //             var_export($originalError->request, true)
+        //         ));
+        //         break;
+        //     case "ClientDisabled":
+        //         throw new ClientDisabledException(sprintf(
+        //             "%s: %s. Request: %s",
+        //             $originalError->error->class,
+        //             $originalError->error_message,
+        //             var_export($originalError->request, true)
+        //         ));
+        //         break;
+        //     case "ClientNotFound":
+        //         throw new ApiKeyClientMismatchException(sprintf(
+        //             "%s: %s. Request: %s",
+        //             $originalError->error->class,
+        //             $originalError->error_message,
+        //             var_export($originalError->request, true)
+        //         ));
+        //         break;
+        //     default:
+        //         throw new ApiEndpointErrorException(
+        //             $originalError,
+        //             sprintf(
+        //                 "Got error code: %s, error class: %s. Not sure how to handle it. Body of error response: %s",
+        //                 $response->getStatusCode(),
+        //                 $originalError->error->class,
+        //                 var_export($originalError, true)
+        //             )
+        //         );
+        // }
     }
 }
