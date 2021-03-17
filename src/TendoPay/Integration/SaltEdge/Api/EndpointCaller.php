@@ -99,44 +99,43 @@ class EndpointCaller
      */
     private function handleErrors(ResponseInterface $response)
     {
-        return $response;
-        // $originalError = json_decode($response->getBody()->getContents());
+        $originalError = json_decode($response->getBody()->getContents());
 
-        // switch ($originalError->error->class) {
-        //     case "ApiKeyNotFound":
-        //         throw new WrongApiKeyException(sprintf(
-        //             "%s: %s. Request: %s",
-        //             $originalError->error->class,
-        //             $originalError->error_message,
-        //             var_export($originalError->request, true)
-        //         ));
-        //         break;
-        //     case "ClientDisabled":
-        //         throw new ClientDisabledException(sprintf(
-        //             "%s: %s. Request: %s",
-        //             $originalError->error->class,
-        //             $originalError->error_message,
-        //             var_export($originalError->request, true)
-        //         ));
-        //         break;
-        //     case "ClientNotFound":
-        //         throw new ApiKeyClientMismatchException(sprintf(
-        //             "%s: %s. Request: %s",
-        //             $originalError->error->class,
-        //             $originalError->error_message,
-        //             var_export($originalError->request, true)
-        //         ));
-        //         break;
-        //     default:
-        //         throw new ApiEndpointErrorException(
-        //             $originalError,
-        //             sprintf(
-        //                 "Got error code: %s, error class: %s. Not sure how to handle it. Body of error response: %s",
-        //                 $response->getStatusCode(),
-        //                 $originalError->error->class,
-        //                 var_export($originalError, true)
-        //             )
-        //         );
-        // }
+        switch ($originalError->error->class) {
+            // case "ApiKeyNotFound":
+            //     throw new WrongApiKeyException(sprintf(
+            //         "%s: %s. Request: %s",
+            //         $originalError->error->class,
+            //         $originalError->error_message,
+            //         var_export($originalError->request, true)
+            //     ));
+            //     break;
+            // case "ClientDisabled":
+            //     throw new ClientDisabledException(sprintf(
+            //         "%s: %s. Request: %s",
+            //         $originalError->error->class,
+            //         $originalError->error_message,
+            //         var_export($originalError->request, true)
+            //     ));
+            //     break;
+            // case "ClientNotFound":
+            //     throw new ApiKeyClientMismatchException(sprintf(
+            //         "%s: %s. Request: %s",
+            //         $originalError->error->class,
+            //         $originalError->error_message,
+            //         var_export($originalError->request, true)
+            //     ));
+            //     break;
+            default:
+                throw new ApiEndpointErrorException(
+                    $originalError,
+                    sprintf(
+                        "Got error code: %s, error class: %s. Not sure how to handle it. Body of error response: %s",
+                        $response->getStatusCode(),
+                        $originalError->error->class,
+                        var_export($originalError, true)
+                    )
+                );
+        }
     }
 }

@@ -50,13 +50,13 @@ class ConnectionService
     {
         try {
             $received = $this->endpointCaller->call("GET", self::CONNECTIONS_API_URL);
-            return $received->data;
+            return data_get($received, 'data');
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
-                case "LoginNotFound":
-                    throw new InvalidLoginIdException();
+                // case "LoginNotFound":
+                //     throw new InvalidLoginIdException();
                 default:
-                    throw $exception;
+                    return $exception->getOriginalError();
             }
         }
     }
@@ -89,10 +89,10 @@ class ConnectionService
             return data_get($received, 'data');
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
-                case 'ConnectionNotFound':
-                    throw new ConnectionNotFoundException();
+                // case 'ConnectionNotFound':
+                //     throw new ConnectionNotFoundException();
                 default:
-                    throw $exception;
+                    return $exception->getOriginalError();
             }
         }
     }

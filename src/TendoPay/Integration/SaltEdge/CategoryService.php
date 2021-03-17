@@ -3,7 +3,6 @@
 
 namespace TendoPay\Integration\SaltEdge;
 
-
 use stdClass;
 use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 
@@ -44,7 +43,14 @@ class CategoryService
      */
     public function getAll()
     {
-        $responseContent = $this->endpointCaller->call("GET", self::LIST_URL);
-        return $responseContent->data;
+        try {
+            $received = $this->endpointCaller->call("GET", self::LIST_URL);
+            return data_get($received, 'data');
+        } catch (ApiEndpointErrorException $exception) {
+            switch ($exception->getOriginalError()->error->class) {
+                default:
+                    return $exception->getOriginalError();
+            }
+        }
     }
 }

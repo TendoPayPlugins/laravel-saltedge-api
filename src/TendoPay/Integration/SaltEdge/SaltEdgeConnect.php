@@ -39,18 +39,18 @@ class SaltEdgeConnect
                     ]
                 ]
             );
-            return $received->data;
+            return data_get($received, 'data');
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
-                case "CustomerNotFound":
-                    throw new CustomerNotFoundException();
+                // case "CustomerNotFound":
+                //     throw new CustomerNotFoundException();
                 default:
-                    throw $exception;
+                    return $exception->getOriginalError();
             }
         }
     }
 
-    public function refresh()
-    {
-    }
+    // public function refresh()
+    // {
+    // }
 }

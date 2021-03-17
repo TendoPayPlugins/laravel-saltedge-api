@@ -40,8 +40,16 @@ class MerchantService
      */
     public function getMerchants($data)
     {
-        $received = $this->endpointCaller->call("POST", self::LIST_Merchants_API_URL, $data);
-        return $received->data;
-    }
+        try {
+            $received = $this->endpointCaller->call("POST", self::LIST_Merchants_API_URL, $data);
+            return data_get($received, 'data');
 
+            return data_get($received, 'data');
+        } catch (ApiEndpointErrorException $exception) {
+            switch ($exception->getOriginalError()->error->class) {
+                default:
+                    return $exception->getOriginalError();
+            }
+        }
+    }
 }

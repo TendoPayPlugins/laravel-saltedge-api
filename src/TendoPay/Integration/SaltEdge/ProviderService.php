@@ -53,13 +53,13 @@ class ProviderService
     {
         try {
             $received = $this->endpointCaller->call("GET", sprintf(self::PROVIDER_SHOW_ENDPOINT_URL, $code));
-            return $received->data;
-        } catch (ApiEndpointErrorException $e) {
+            return data_get($received, 'data');
+        } catch (ApiEndpointErrorException $exception) {
             switch ($e->getOriginalError()->error->class) {
-                case "ProviderNotFound":
-                    throw new InvalidProviderCodeException($e);
+                // case "ProviderNotFound":
+                //     throw new InvalidProviderCodeException($e);
                 default:
-                    throw $e;
+                    return $exception->getOriginalError();
             }
         }
     }
@@ -90,15 +90,15 @@ class ProviderService
     {
         try {
             $received = $this->endpointCaller->call("GET", self::PROVIDERS_LIST_ENDPOINT_URL, $filters->toArray());
-            return $received->data;
-        } catch (ApiEndpointErrorException $e) {
+            return data_get($received, 'data');
+        } catch (ApiEndpointErrorException $exception) {
             switch ($e->getOriginalError()->error->class) {
-                case "DateOutOfRange":
-                    throw new FilterDateOutOfRangeException($e);
-                case "ValueOutOfRange":
-                    throw new FilterValueOutOfRangeException($e);
+                // case "DateOutOfRange":
+                //     throw new FilterDateOutOfRangeException($e);
+                // case "ValueOutOfRange":
+                //     throw new FilterValueOutOfRangeException($e);
                 default:
-                    throw $e;
+                    return $exception->getOriginalError();
             }
         }
     }

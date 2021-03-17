@@ -2,7 +2,6 @@
 
 namespace TendoPay\Integration\SaltEdge;
 
-
 use stdClass;
 use TendoPay\Integration\SaltEdge\Api\ApiEndpointErrorException;
 use TendoPay\Integration\SaltEdge\Api\Customers\CustomerNotFoundException;
@@ -50,7 +49,7 @@ class CustomerService
     {
         try {
             $received = $this->endpointCaller->call("GET", sprintf(self::SHOW_CUSTOMER_API_URL, $id));
-            return $received->data;
+            return data_get($received, 'data');
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
                 case "CustomerNotFound":
@@ -82,7 +81,7 @@ class CustomerService
     public function getAll()
     {
         $received = $this->endpointCaller->call("GET", self::LIST_CUSTOMERS_API_URL);
-        return $received->data;
+        return data_get($received, 'data');
     }
 
     /**
@@ -99,13 +98,20 @@ class CustomerService
      */
     public function create(string $email = '')
     {
-        $received = $this->endpointCaller->call("POST", self::LIST_CUSTOMERS_API_URL, [
-            'data' => [
-                'identifier' => $email
-            ]
-        ]);
+        try {
+            $received = $this->endpointCaller->call("POST", self::LIST_CUSTOMERS_API_URL, [
+                'data' => [
+                    'identifier' => $email
+                ]
+            ]);
 
-        return $received->data;
+            return data_get($received, 'data');
+        } catch (ApiEndpointErrorException $exception) {
+            switch ($exception->getOriginalError()->error->class) {
+                default:
+                    return $exception->getOriginalError();
+            }
+        }
     }
 
     /**
@@ -133,13 +139,13 @@ class CustomerService
     {
         try {
             $received = $this->endpointCaller->call('DELETE', sprintf(self::SHOW_CUSTOMER_API_URL, $id));
-            return $received->data;
+            return data_get($received, 'data');
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
-                case 'CustomerNotFound':
-                    throw new CustomerNotFoundException();
+                // case 'CustomerNotFound':
+                //     throw new CustomerNotFoundException();
                 default:
-                    throw $exception;
+                    return $exception->getOriginalError();
             }
         }
     }

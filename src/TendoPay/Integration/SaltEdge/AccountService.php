@@ -3,7 +3,6 @@
 
 namespace TendoPay\Integration\SaltEdge;
 
-
 use stdClass;
 use TendoPay\Integration\SaltEdge\Api\Accounts\AccountsListFilter;
 use TendoPay\Integration\SaltEdge\Api\Accounts\InvalidLoginIdException;
@@ -52,13 +51,13 @@ class AccountService
     {
         try {
             $received = $this->endpointCaller->call("GET", self::ACCOUNTS_LIST_API_URL, $accountsListFilter->toArray());
-            return $received->data;
+            return data_get($received, 'data');
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
-                case "LoginNotFound":
-                    throw new InvalidLoginIdException();
+                // case "LoginNotFound":
+                //     throw new InvalidLoginIdException();
                 default:
-                    throw $exception;
+                    return $exception->getOriginalError();
             }
         }
     }

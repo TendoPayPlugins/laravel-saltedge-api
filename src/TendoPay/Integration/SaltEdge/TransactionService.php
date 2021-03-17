@@ -49,15 +49,14 @@ class TransactionService
     {
         try {
             $received = $this->endpointCaller->call("GET", self::LIST_TRANSACTIONS_API_URL, $transactionsListFilter->toArray());
-            return $received->data;
+            return data_get($received, 'data');
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
-                case "CustomerNotFound":
-                    throw new TransactionNotFoundException();
+                // case "CustomerNotFound":
+                //     throw new TransactionNotFoundException();
                 default:
-                    throw $exception;
+                    return $exception->getOriginalError();
             }
         }
     }
-
 }
