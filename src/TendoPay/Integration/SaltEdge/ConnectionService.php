@@ -11,6 +11,7 @@ use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 class ConnectionService
 {
     const CONNECTIONS_API_URL = "connections";
+    const DELETE_CONNECTION_API_URL = "connections/%s";
 
     private $endpointCaller;
 
@@ -84,7 +85,7 @@ class ConnectionService
     public function remove($id)
     {
         try {
-            $received = $this->endpointCaller->call('DELETE', sprintf(self::CONNECTIONS_API_URL, $id));
+            $received = $this->endpointCaller->call('DELETE', sprintf(self::DELETE_CONNECTION_API_URL, $id));
             return $received->data;
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
