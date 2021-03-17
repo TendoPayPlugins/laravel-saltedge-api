@@ -86,7 +86,7 @@ class ConnectionService
     {
         try {
             $received = $this->endpointCaller->call('DELETE', sprintf(self::SHOW_CUSTOMER_API_URL, $id));
-            return $received->data;
+            return $received;
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
                 case 'ConnectionNotFound':
