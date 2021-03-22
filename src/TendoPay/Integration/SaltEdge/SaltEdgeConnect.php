@@ -39,8 +39,7 @@ class SaltEdgeConnect
                     ]
                 ]
             );
-            return $received->data;
-            // return data_get($received, 'data');
+            return data_get($received, 'data');
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
                 // case "CustomerNotFound":
