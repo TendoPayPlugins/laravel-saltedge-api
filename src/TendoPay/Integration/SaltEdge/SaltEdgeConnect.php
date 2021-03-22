@@ -31,7 +31,7 @@ class SaltEdgeConnect
                         'return_connection_id' => true,
                         'consent' => [
                             'scopes' => ['account_details', 'transactions_details', 'holder_information'],
-                            // 'from_date' => \Carbon\Carbon::today()->subDays(364)->format('Y-m-d')
+                            'from_date' => \Carbon\Carbon::today()->subDays(364)->format('Y-m-d')
                         ],
                         'attempt' => [
                             'fetch_scopes' => ['accounts', 'transactions', 'holder_info']
@@ -39,7 +39,8 @@ class SaltEdgeConnect
                     ]
                 ]
             );
-            return data_get($received, 'data');
+            return $received->data;
+            // return data_get($received, 'data');
         } catch (ApiEndpointErrorException $exception) {
             switch ($exception->getOriginalError()->error->class) {
                 // case "CustomerNotFound":
