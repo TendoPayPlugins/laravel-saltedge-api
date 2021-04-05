@@ -36,7 +36,7 @@ class SaltEdgeConnect
     public function connect($id, $provider = null)
     {
         try {
-            if (isset($provider) && !array_search($provider, array_values(self::AUTHORIZED_PROVIDERS))) {
+            if (isset($provider) && array_search($provider, array_values(self::AUTHORIZED_PROVIDERS)) === false) {
                 throw new \Exception('Unsupported provider');
             }
 
@@ -67,6 +67,8 @@ class SaltEdgeConnect
                 default:
                     return $exception->getOriginalError();
             }
+        } catch (\Exception $exception) {
+            return 'An error has occured.';
         }
     }
 
