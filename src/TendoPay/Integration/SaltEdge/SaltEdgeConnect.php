@@ -12,6 +12,20 @@ class SaltEdgeConnect
     const RECONNECT_USING_SALTEDGE_CONNECT = 'connect_sessions/reconnect';
     const REFRESH_USING_SALTEDGE_CONNECT   = 'connect_sessions/refresh';
 
+    // Supported Channels
+    // Bank of Philippine Island
+    public const BPI = 'BPI';
+    // Metrobank
+    public const MET = 'MET';
+    // Banco de Oro
+    public const BDO = 'BDO';
+
+    public const AUTHORIZED_PROVIDERS = [
+        'BPI' => 'bank_of_philippine_ph',
+        'MET' => 'metrobank_ph',
+        'BDO' => 'bdo_ph'
+    ];
+
     private $endpointCaller;
 
     public function __construct(EndpointCaller $endpointCaller)
@@ -19,9 +33,13 @@ class SaltEdgeConnect
         $this->endpointCaller = $endpointCaller;
     }
 
-    public function connect($id)
+    public function connect($id, $provider = null)
     {
         try {
+            if (isset($provider) && !array_search($provider, array_values(self::AUTHORIZED_PROVIDERS))) {
+                throw new \Exception('Unsupported provider');
+            }
+
             $received = $this->endpointCaller->call(
                 "POST",
                 self::CONNECT_USING_SALTEDGE_CONNECT,
@@ -35,7 +53,9 @@ class SaltEdgeConnect
                         ],
                         'attempt' => [
                             'fetch_scopes' => ['accounts', 'transactions', 'holder_info']
-                        ]
+                        ],
+                        'provider_code' => $provider,
+                        'allowed_countries' => ['PH']
                     ]
                 ]
             );
