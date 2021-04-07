@@ -58,12 +58,22 @@ class EndpointCaller
      */
     public function call($method, $url, array $payload = [])
     {
+        $privateKey = openssl_get_privatekey(file_get_contents(storage_path('app/saltedge_private.pem')));
+
+        $expiresAt = \Carbon\Carbon::now()->addMinutes(5)->timestamp;
+        $signature = "$expiresAt|$method|$this->apiUrl" . "$url" . (count($payload) > 0 ? '|' . json_encode($payload) : '');
+        openssl_sign($signature, $encodedSignature, $privateKey, 'sha256');
+
+        \Log::debug($signature);
+
         $options = [
             "headers" => [
                 "Accept" => "application/json",
                 "Content-type" => "application/json",
                 "App-id" => $this->appId,
                 "Secret" => $this->secret,
+                "Expires-At" => $expiresAt,
+                "Signature" => base64_encode($encodedSignature)
             ]
         ];
 
@@ -100,6 +110,7 @@ class EndpointCaller
     private function handleErrors(ResponseInterface $response)
     {
         $originalError = json_decode($response->getBody()->getContents());
+        \Log::debug(json_encode($originalError));
 
         switch ($originalError->error->class) {
             // case "ApiKeyNotFound":
