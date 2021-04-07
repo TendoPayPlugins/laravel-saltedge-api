@@ -62,7 +62,7 @@ class EndpointCaller
 
         $expiresAt = \Carbon\Carbon::now()->addMinutes(5)->timestamp;
         $signature = "$expiresAt|$method|$this->apiUrl" . "$url" . (count($payload) > 0 ? '|' . json_encode($payload) : '');
-        openssl_sign($signature, $encodedSignature, $privateKey, 'sha256');
+        openssl_sign($signature, $encodedSignature, $privateKey, OPENSSL_ALGO_SHA256);
 
         \Log::debug($signature);
 
