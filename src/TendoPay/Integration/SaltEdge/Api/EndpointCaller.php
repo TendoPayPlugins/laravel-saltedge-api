@@ -12,7 +12,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 class EndpointCaller
 {
