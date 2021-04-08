@@ -12,6 +12,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
+use Storage;
 
 class EndpointCaller
 {
@@ -60,16 +61,16 @@ class EndpointCaller
     {
         $privateKey = null;
         if (config('saltedge.storage_mode') === 'local') {
-            $privateKey = storage_path(config('saltedge.private_key_path'));
+            $privateKey = file_get_contents(storage_path(config('saltedge.private_key_path')));
         } elseif (config('saltedge.storage_mode') === 's3') {
-            $privateKey = config('saltedge.private_key_path');
+            $privateKey = Storage::disk('s3')->get(config('saltedge.private_key_path'));
         }
 
         if ($privateKey === null) {
             throw new \Exception('Make sure to pass a private key in your environment, as well as a storage mode.');
         }
 
-        $privateKey = openssl_get_privatekey(file_get_contents($privateKey));
+        $privateKey = openssl_get_privatekey($privateKey);
 
         $expiresAt = \Carbon\Carbon::now()->addMinutes(5)->timestamp;
         $signature = "$expiresAt|$method|$this->apiUrl" . "$url" . (count($payload) > 0 ? '|' . json_encode($payload) : '');
