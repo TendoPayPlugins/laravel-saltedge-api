@@ -58,8 +58,18 @@ class EndpointCaller
      */
     public function call($method, $url, array $payload = [])
     {
-        $privateKeyPath = config('saltedge.storage_mode') === 'local' ? storage_path(config('saltedge.private_key_path')) : config('saltedge.private_key_path');
-        $privateKey = openssl_get_privatekey(file_get_contents($privateKeyPath));
+        $privateKey = null;
+        if (config('saltedge.storage_mode') === 'local') {
+            $privateKey = storage_path(config('saltedge.private_key_path'));
+        } elseif (config('saltedge.storage_mode') === 's3') {
+            config('saltedge.private_key_path');
+        }
+
+        if ($privateKey === null) {
+            throw new \Exception('Make sure to pass a private key in your environment, as well as a storage mode.');
+        }
+
+        $privateKey = openssl_get_privatekey(file_get_contents($privateKey));
 
         $expiresAt = \Carbon\Carbon::now()->addMinutes(5)->timestamp;
         $signature = "$expiresAt|$method|$this->apiUrl" . "$url" . (count($payload) > 0 ? '|' . json_encode($payload) : '');
