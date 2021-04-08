@@ -62,7 +62,7 @@ class EndpointCaller
         if (config('saltedge.storage_mode') === 'local') {
             $privateKey = storage_path(config('saltedge.private_key_path'));
         } elseif (config('saltedge.storage_mode') === 's3') {
-            config('saltedge.private_key_path');
+            $privateKey = config('saltedge.private_key_path');
         }
 
         if ($privateKey === null) {
