@@ -13,6 +13,8 @@
         <env name="SALTEDGE_URL" value="https://www.saltedge.com/api/v4/"/>
         <env name="SALTEDGE_APP_ID" value="WM75_qN1N3KJYCl6IjhZgqGtRAY-i614fuAjV4UnGw8"/>
         <env name="SALTEDGE_SECRET" value="5o12Ea41LHXN5ioWSOdaAvL8Q-EHtoW2Z7GQz2T1zjo"/>
+        <env name="SALTEDGE_STORAGE_MODE" value="local"/>
+        <env name="SALTEDGE_PRIVATE_KEY_PATH" value="app/saltedge_private.pem"/>
     </php>
     <testsuites>
         <testsuite name="MyPackage Test Suite">

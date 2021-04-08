@@ -18,7 +18,7 @@ Add new git repository to the `composer.json` configuration:
 ```
 
 Next run following command:
- 
+
 `composer require tendopay/laravel-dragonpay-api`
 
 or add the dependency in your `composer.json` and update composer dependencies:
@@ -47,6 +47,9 @@ In laravel's .env file add following keys with proper values Which you can attai
 SALTEDGE_URL=
 SALTEDGE_APP_ID=
 SALTEDGE_SECRET=
+SALTEDGE_PRIVATE_KEY_PATH=
+// local or s3
+SALTEDGE_STORAGE_MODE=
 ```
 
 ## What's included
