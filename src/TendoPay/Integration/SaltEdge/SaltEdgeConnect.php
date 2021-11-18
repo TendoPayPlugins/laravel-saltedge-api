@@ -36,7 +36,7 @@ class SaltEdgeConnect
     public function connect($id, $provider = null)
     {
         try {
-            if (isset($provider) && array_search($provider, array_values(self::AUTHORIZED_PROVIDERS)) === false) {
+            if (!self::AUTHORIZED_PROVIDERS[$provider]) {
                 throw new \Exception('Unsupported provider');
             }
 
@@ -54,7 +54,7 @@ class SaltEdgeConnect
                         'attempt' => [
                             'fetch_scopes' => ['accounts', 'transactions', 'holder_info']
                         ],
-                        'provider_code' => $provider,
+                        'provider_code' => self::AUTHORIZED_PROVIDERS[$provider],
                         'allowed_countries' => ['PH']
                     ]
                 ]
